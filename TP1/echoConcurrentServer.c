@@ -53,5 +53,6 @@ int main (int argc, char **argv)
     exit(0); // child terminates
   }
   close(connfd); // parent closes connected socket
+  close(listenfd); // parent closes listening socket
  }
 }

@@ -12,12 +12,15 @@
 
 char *file_name;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wmissing-noreturn"
 void receive_request(int i) {
     FILE *fp;
     char buf[MAXLINE];
     struct sockaddr_in servaddr, cliaddr;
     socklen_t clilen = sizeof(cliaddr);
-    int listenfd, connfd, file_block_size;
+    int listenfd, connfd;
+    size_t file_block_size;
 
     //creation of the socket
     listenfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -44,8 +47,9 @@ void receive_request(int i) {
         close(connfd);
     }
     //close listening socket
-    close(listenfd);
+    //close(listenfd);
 }
+#pragma clang diagnostic pop
 
 int main(int argc, char **argv) {
     int i;

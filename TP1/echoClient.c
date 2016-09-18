@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <string.h>
+#include <stdbool.h>
 #include <arpa/inet.h>
 
 #define MAXLINE 4096 /*max text line length*/
@@ -17,7 +17,8 @@ int main(int argc, char **argv) {
     //basic check of the arguments
     //additional checks can be inserted
     if (argc != 2) {
-        perror("Usage: TCPClient <IP address of the server");
+        char* error = strcat(argv[0], " <IP address of the server>");
+        perror(strcat("Usage: ", error));
         exit(1);
     }
 
@@ -41,14 +42,14 @@ int main(int argc, char **argv) {
     }
 
     FILE *fp = fopen("fwrite", "w");
-    int success = 0;
+    bool success = false;
 
+    size_t file_block_size;
     while (!success) {
-        int file_block_size;
-        while (file_block_size = recv(sockfd, recvline, MAXLINE, 0)) {
+        while ((file_block_size = (size_t) recv(sockfd, recvline, MAXLINE, 0)) > 0) {
             fwrite(recvline, sizeof(char), file_block_size, fp);
         }
-        success = 1;
+        success = true;
         fclose(fp);
     }
 

@@ -1,23 +1,23 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <string.h>
 #include <unistd.h>
 
 #define MAXLINE 4096 /*max text line length*/
 #define SERV_PORT 3000 /*port*/
 #define LISTENQ 8 /*maximum number of client connections */
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wmissing-noreturn"
 int main(int argc, char **argv) {
-    int listenfd, connfd, n;
+    int listenfd, connfd;
     socklen_t clilen;
     char buf[MAXLINE];
     FILE *fp;
     struct sockaddr_in cliaddr, servaddr;
 
-    //creation of the socket
+    //creation of the socketsize_t file_block_size;
     listenfd = socket(AF_INET, SOCK_STREAM, 0);
 
     //preparation of the socket address
@@ -31,13 +31,12 @@ int main(int argc, char **argv) {
 
     printf("%s\n", "Server running...waiting for connections.");
 
-    for (;;) {
+    size_t file_block_size;
+    for(;;) {
 
         clilen = sizeof(cliaddr);
         connfd = accept(listenfd, (struct sockaddr *) &cliaddr, &clilen);
         printf("%s\n", "Received request...");
-
-        int file_block_size;
 
         fp = fopen(argv[1], "r");
         while ((file_block_size = fread(buf, sizeof(char), MAXLINE, fp)) > 0) {
@@ -49,5 +48,6 @@ int main(int argc, char **argv) {
 
     }
     //close listening socket
-    close(listenfd);
+    //close(listenfd);
 }
+#pragma clang diagnostic pop

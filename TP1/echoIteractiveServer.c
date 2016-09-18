@@ -10,12 +10,18 @@
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wmissing-noreturn"
+
 int main(int argc, char **argv) {
     int listenfd, connfd;
     socklen_t clilen;
     char buf[MAXLINE];
     FILE *fp;
     struct sockaddr_in cliaddr, servaddr;
+
+    if (argc != 2) {
+        perror("Usage: executable <path to file to be served>");
+        exit(1);
+    }
 
     //creation of the socketsize_t file_block_size;
     listenfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -32,7 +38,7 @@ int main(int argc, char **argv) {
     printf("%s\n", "Server running...waiting for connections.");
 
     size_t file_block_size;
-    for(;;) {
+    for (;;) {
 
         clilen = sizeof(cliaddr);
         connfd = accept(listenfd, (struct sockaddr *) &cliaddr, &clilen);
@@ -50,4 +56,5 @@ int main(int argc, char **argv) {
     //close listening socket
     //close(listenfd);
 }
+
 #pragma clang diagnostic pop

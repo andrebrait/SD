@@ -17,8 +17,7 @@ int main(int argc, char **argv) {
     //basic check of the arguments
     //additional checks can be inserted
     if (argc != 2) {
-        char* error = strcat(argv[0], " <IP address of the server>");
-        perror(strcat("Usage: ", error));
+        perror("Usage: executable <IP address of the server>");
         exit(1);
     }
 

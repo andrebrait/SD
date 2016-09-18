@@ -15,6 +15,11 @@ int main(int argc, char **argv) {
     FILE *fp;
     struct sockaddr_in cliaddr, servaddr;
 
+    if (argc != 2) {
+        perror("Usage: executable <path to file to be served>");
+        exit(1);
+    }
+
     //creation of the socket
     listenfd = socket(AF_INET, SOCK_STREAM, 0);
 

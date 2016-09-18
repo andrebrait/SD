@@ -52,6 +52,12 @@ void receive_request(int i) {
 #pragma clang diagnostic pop
 
 int main(int argc, char **argv) {
+
+    if (argc != 2) {
+        perror("Usage: executable <path to file to be served>");
+        exit(1);
+    }
+
     int i;
     pid_t child_pid;
 

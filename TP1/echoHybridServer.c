@@ -15,52 +15,51 @@
 char *file_name;
 
 void receive_request(int i) {
- FILE *fp;
- char buf[MAXLINE];
- struct sockaddr_in servaddr, cliaddr;
- socklen_t clilen = sizeof(cliaddr);
- int listenfd, connfd, file_block_size;
+    FILE *fp;
+    char buf[MAXLINE];
+    struct sockaddr_in servaddr, cliaddr;
+    socklen_t clilen = sizeof(cliaddr);
+    int listenfd, connfd, file_block_size;
 
- //creation of the socket
- listenfd = socket (AF_INET, SOCK_STREAM, 0);
-	
- //preparation of the socket address 
- servaddr.sin_family = AF_INET;
- servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
- servaddr.sin_port = htons(SERV_PORT);
-	
- bind(listenfd, (struct sockaddr *) &servaddr, sizeof(servaddr));
-	
- listen(listenfd, LISTENQ);
-	
- printf("Server %d running...waiting for connections.\n", i);
+    //creation of the socket
+    listenfd = socket(AF_INET, SOCK_STREAM, 0);
 
- for ( ; ; ) {
-  connfd = accept(listenfd, (struct sockaddr *) &cliaddr, &clilen);
-  printf("Server %d received request...\n", i);
-  fp = fopen(file_name, "r");
-  while ((file_block_size = fread(buf, sizeof(char), MAXLINE, fp)) > 0) {
-   send(connfd, buf, file_block_size, 0);
-  }
-  fclose(fp);
-  close(connfd);
- }
- //close listening socket
- close(listenfd);
+    //preparation of the socket address
+    servaddr.sin_family = AF_INET;
+    servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    servaddr.sin_port = htons(SERV_PORT);
+
+    bind(listenfd, (struct sockaddr *) &servaddr, sizeof(servaddr));
+
+    listen(listenfd, LISTENQ);
+
+    printf("Server %d running...waiting for connections.\n", i);
+
+    for (;;) {
+        connfd = accept(listenfd, (struct sockaddr *) &cliaddr, &clilen);
+        printf("Server %d received request...\n", i);
+        fp = fopen(file_name, "r");
+        while ((file_block_size = fread(buf, sizeof(char), MAXLINE, fp)) > 0) {
+            send(connfd, buf, file_block_size, 0);
+        }
+        fclose(fp);
+        close(connfd);
+    }
+    //close listening socket
+    close(listenfd);
 }
 
-int main (int argc, char **argv) {
- int i;
- pid_t child_pid;
+int main(int argc, char **argv) {
+    int i;
+    pid_t child_pid;
 
- for (i = 0; i < MAX_SERVERS; i ++) {
-   child_pid = fork();
-   if (child_pid == 0) {
-     receive_request(i);
-   }
-   else {
-      waitpid(child_pid, NULL, 0);
-      return 0;
-   }
- }
+    for (i = 0; i < MAX_SERVERS; i++) {
+        child_pid = fork();
+        if (child_pid == 0) {
+            receive_request(i);
+        } else {
+            waitpid(child_pid, NULL, 0);
+            return 0;
+        }
+    }
 }

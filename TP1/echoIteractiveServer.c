@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
-    //creation of the socketsize_t file_block_size;
+    //creation of the socketsize_t file_block_size; ""
     listenfd = socket(AF_INET, SOCK_STREAM, 0);
 
     //preparation of the socket address
@@ -35,18 +35,20 @@ int main(int argc, char **argv) {
 
     listen(listenfd, LISTENQ);
 
-    printf("%s\n", "Server running...waiting for connections.");
+    printf("Iteractive Server running... waiting for connections.\n");
 
     size_t file_block_size;
+    long count = 0;
     for (;;) {
 
         clilen = sizeof(cliaddr);
         connfd = accept(listenfd, (struct sockaddr *) &cliaddr, &clilen);
-        printf("%s\n", "Received request...");
+        printf("Received request %li...\n", ++count);
 
         fp = fopen(argv[1], "r");
         while ((file_block_size = fread(buf, sizeof(char), MAXLINE, fp)) > 0) {
             send(connfd, buf, file_block_size, 0);
+            printf("Sending %zu bytes to request %li\n", file_block_size, count);
         }
         fclose(fp);
 
@@ -56,5 +58,4 @@ int main(int argc, char **argv) {
     //close listening socket
     //close(listenfd);
 }
-
 #pragma clang diagnostic pop

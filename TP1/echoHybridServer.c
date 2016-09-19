@@ -34,14 +34,16 @@ void receive_request(int i) {
 
     listen(listenfd, LISTENQ);
 
-    printf("Server %d running...waiting for connections.\n", i);
+    printf("Hybrid Server %d running... waiting for connections.\n", i);
 
+    long count = 0;
     for (;;) {
         connfd = accept(listenfd, (struct sockaddr *) &cliaddr, &clilen);
-        printf("Server %d received request...\n", i);
+        printf("Server %d received request %li...\n", getpid(), ++count);
         fp = fopen(file_name, "r");
         while ((file_block_size = fread(buf, sizeof(char), MAXLINE, fp)) > 0) {
             send(connfd, buf, file_block_size, 0);
+            printf("Sending %zu bytes with PID %d to request %li\n", file_block_size, getpid(), count);
         }
         fclose(fp);
         close(connfd);

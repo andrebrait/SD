@@ -32,21 +32,21 @@ int main(int argc, char **argv) {
 
     listen(listenfd, LISTENQ);
 
-    printf("%s\n", "Server running...waiting for connections.");
+    printf("Concurrent Server running... waiting for connections.\n");
 
-    size_t file_block_size;
     for (;;) {
-
         clilen = sizeof(cliaddr);
         connfd = accept(listenfd, (struct sockaddr *) &cliaddr, &clilen);
         if (fork() == 0) {
             close(listenfd); /* child closes listening socket */
 
-            printf("%s\n", "Received request...");
+            size_t file_block_size;
+            printf("Received request on PID %d...\n", getpid());
 
             fp = fopen(argv[1], "r");
             while ((file_block_size = fread(buf, sizeof(char), MAXLINE, fp)) > 0) {
                 send(connfd, buf, file_block_size, 0);
+                printf("Sending %zu bytes with PID %i\n", file_block_size, getpid());
             }
             fclose(fp);
 

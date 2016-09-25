@@ -3,10 +3,13 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/TP1/echoClient.c" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/TP1/echoConcurrentServer.c" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/TP1/echoIteractiveServer.c" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/TP1/CMakeLists.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/TP1/echoIteractiveServer.c" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/TP1/echoHybridServer.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/TP1/echoConcurrentServer.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/TP1/RPC/fileserv.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/TP1/RPC/CMakeLists.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/TP1/RPC/filecli.c" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />

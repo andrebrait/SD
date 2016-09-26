@@ -3,7 +3,6 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <string.h>
-#include <stdbool.h>
 #include <arpa/inet.h>
 
 #define MAXLINE 4096 /*max text line length*/
@@ -49,18 +48,14 @@ int main(int argc, char **argv) {
         fname = strcat(filename, argv[2]);
     }
     FILE *fp = fopen(fname, "w");
-    bool success = false;
 
     size_t file_block_size;
     size_t accum_size = 0;
-    while (!success) {
-        while ((file_block_size = (size_t) recv(sockfd, recvline, MAXLINE, 0)) > 0) {
-            fwrite(recvline, sizeof(char), file_block_size, fp);
-            accum_size += file_block_size;
-        }
-        success = true;
-        fclose(fp);
+    while ((file_block_size = (size_t) recv(sockfd, recvline, MAXLINE, 0)) > 0) {
+        fwrite(recvline, sizeof(char), file_block_size, fp);
+        accum_size += file_block_size;
     }
+    fclose(fp);
     if (i > 0) {
         printf("Client %d finished receiving %zu bytes\n", i, accum_size);
     } else {

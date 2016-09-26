@@ -4,7 +4,6 @@
 #include <netinet/in.h>
 #include <unistd.h>
 #include <wait.h>
-#include <semaphore.h>
 
 #define MAXLINE 4096 /*max text line length*/
 #define SERV_PORT 3000 /*port*/
@@ -14,7 +13,6 @@
 char *file_name;
 struct sockaddr_in servaddr;
 int listenfd;
-sem_t *semaphore;
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wmissing-noreturn"
@@ -37,7 +35,6 @@ void receive_request(int i) {
         fp = fopen(file_name, "r");
         while ((file_block_size = fread(buf, sizeof(char), MAXLINE, fp)) > 0) {
             send(connfd, buf, file_block_size, 0);
-            printf("Sending %zu bytes with PID %d to request %li\n", file_block_size, getpid(), count);
         }
         fclose(fp);
         close(connfd);
@@ -58,9 +55,6 @@ int main(int argc, char **argv) {
     pid_t child_pid;
 
     file_name = argv[1];
-
-    // Init the semaphore
-    sem_init(semaphore, 1, 1);
 
     //creation of the socket
     listenfd = socket(AF_INET, SOCK_STREAM, 0);

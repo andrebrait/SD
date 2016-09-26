@@ -48,14 +48,10 @@ int main(int argc, char **argv) {
         fp = fopen(argv[1], "r");
         while ((file_block_size = fread(buf, sizeof(char), MAXLINE, fp)) > 0) {
             send(connfd, buf, file_block_size, 0);
-            printf("Sending %zu bytes to request %li\n", file_block_size, count);
         }
         fclose(fp);
-
         close(connfd);
 
     }
-    //close listening socket
-    //close(listenfd);
 }
 #pragma clang diagnostic pop

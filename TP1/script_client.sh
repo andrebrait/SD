@@ -8,7 +8,7 @@ pkill clientSD
 rm fwrite*
 rm client_out_*
 
-for i in `seq 1 100`
+for i in `seq 1 4`
 do
-    (./clientSD 127.0.0.1 ${i}; rm fwrite${i})&
+    (./clientSD 127.0.0.1 ${i}; rm fwrite${i};)&
 done

@@ -35,7 +35,7 @@ int main (int argc, char *argv[]) {
 	fp = fopen(destination_file, "w");
 	while (*content != '\0') {
 		fwrite(*content, sizeof(char), 1, fp);
-		*content ++;
+        content++;
 	}
 	printf("Sucessfull Download!\n");
 	fclose(fp);

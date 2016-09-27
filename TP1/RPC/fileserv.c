@@ -1,6 +1,7 @@
 #include <rpc/rpc.h>
+#include "file.h"
 
-char **servefile_1_svc(char **fname) {
+char **servefile_1_svc(char **fname, struct svc_req *req) {
     FILE *fp;
     long lSize;
     static char *buffer;

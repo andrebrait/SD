@@ -19,9 +19,12 @@ extern "C" {
 
 #if defined(__STDC__) || defined(__cplusplus)
 #define SERVEFILE 1
-extern  char ** servefile_1(char **, CLIENT *);
-extern  char ** servefile_1_svc(char **, struct svc_req *);
-extern int file_prog_1_freeresult (SVCXPRT *, xdrproc_t, caddr_t);
+
+extern char **servefile_1(char **, CLIENT *);
+
+extern char **servefile_1_svc(char **, struct svc_req *);
+
+extern int file_prog_1_freeresult(SVCXPRT *, xdrproc_t, caddr_t);
 
 #else /* K&R C */
 #define SERVEFILE 1

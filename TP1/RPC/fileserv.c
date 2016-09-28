@@ -20,14 +20,16 @@ char **servefile_1_svc(char **fname, struct svc_req *req) {
 
     if (!buffer) {
         fclose(fp);
-        fputs("memory alloc fails", stderr), exit(1);
+        fputs("memory alloc fails", stderr);
+        exit(1);
     }
 
     /* copy the file into the buffer */
     if (1 != fread(buffer, (size_t) lSize, 1, fp)) {
         fclose(fp);
         free(buffer);
-        fputs("entire read fails", stderr), exit(1);
+        fputs("entire read fails", stderr);
+        exit(1);
     }
 
     /* do your work here, buffer is a string contains the whole text */
